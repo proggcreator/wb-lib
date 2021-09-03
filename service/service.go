@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	restful "github.com/proggcreator/wb-Restful"
-	"github.com/proggcreator/wb-Restful/repository"
+	restful "github.com/proggcreator/wb-lib/"
+	repository "github.com/proggcreator/wb-lib/repository"
 )
 
 type EmplWork interface {

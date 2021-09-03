@@ -2,10 +2,10 @@ package main
 
 import (
 	_ "github.com/lib/pq"
-	restful "github.com/proggcreator/wb-Restful"
-	"github.com/proggcreator/wb-Restful/handler"
-	"github.com/proggcreator/wb-Restful/repository"
-	"github.com/proggcreator/wb-Restful/service"
+	restful "github.com/proggcreator/wb-lib"
+	"github.com/proggcreator/wb-lib/handler"
+	"github.com/proggcreator/wb-lib/repository"
+	"github.com/proggcreator/wb-lib/service"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )

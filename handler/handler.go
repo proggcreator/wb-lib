@@ -3,7 +3,7 @@ package handler
 import (
 	tech "git.wildberries.ru/finance/go-infrastructure/tech/v2"
 	"github.com/gin-gonic/gin"
-	"github.com/proggcreator/wb-Restful/service"
+	service "github.com/proggcreator/wb-lib/service"
 )
 
 type Handler struct {

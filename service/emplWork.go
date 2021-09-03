@@ -4,7 +4,7 @@ import (
 	"context"
 
 	restful "github.com/proggcreator/wb-Restful"
-	"github.com/proggcreator/wb-Restful/repository"
+	repository "github.com/proggcreator/wb-lib/repository"
 )
 
 type EmplWorkService struct {

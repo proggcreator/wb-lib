@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	restful "github.com/proggcreator/wb-Restful"
+	restful "github.com/proggcreator/wb-lib"
 )
 
 const (

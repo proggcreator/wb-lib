@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	restful "git.wildberries.ru/finance/general-documentation/go-intership-program/day-06"
+	restful "github.com/proggcreator/wb-lib"
 )
 
 type EmplWork interface {

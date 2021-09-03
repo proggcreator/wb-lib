@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	restful "git.wildberries.ru/finance/general-documentation/go-intership-program/day-06"
 	wbsql "git.wildberries.ru/finance/go-infrastructure/database/v2"
+	restful "github.com/proggcreator/wb-lib"
 )
 
 type EmplWorkPostgres struct {
