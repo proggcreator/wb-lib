@@ -2,9 +2,9 @@ package repository
 
 import (
 	"context"
+	"database/sql"
 
-	"github.com/jmoiron/sqlx"
-	restful "github.com/proggcreator/wb-Restful"
+	restful "git.wildberries.ru/finance/general-documentation/go-intership-program/day-06"
 )
 
 type EmplWork interface {
@@ -18,7 +18,7 @@ type Repository struct {
 	EmplWork
 }
 
-func NewRepository(db *sqlx.DB) *Repository {
+func NewRepository(db *sql.DB) *Repository {
 	return &Repository{
 		EmplWork: NewEmplWorkPostgres(db),
 	}

@@ -9,7 +9,6 @@ func (h *Handler) checkJsonType(c *gin.Context) {
 	contentType := c.Request.Header.Get("Content-type")
 	if contentType != "application/json" {
 		logrus.Fatalf("Invalid content-type")
-
 	}
 
 }

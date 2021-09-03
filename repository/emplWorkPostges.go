@@ -2,23 +2,25 @@ package repository
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 
-	"github.com/jmoiron/sqlx"
-	restful "github.com/proggcreator/wb-Restful"
+	restful "git.wildberries.ru/finance/general-documentation/go-intership-program/day-06"
+	wbsql "git.wildberries.ru/finance/go-infrastructure/database/v2"
 )
 
 type EmplWorkPostgres struct {
-	db *sqlx.DB
+	db *sql.DB
 }
 
-func NewEmplWorkPostgres(db *sqlx.DB) *EmplWorkPostgres {
+func NewEmplWorkPostgres(db *sql.DB) *EmplWorkPostgres {
 	return &EmplWorkPostgres{db: db}
 }
 
 func (s *EmplWorkPostgres) CreateEmpl(empl restful.Employee, ctx context.Context) (string, error) {
 	query := fmt.Sprintf("SELECT * FROM employees.employee_add(S1,$2,$3,$4,$5,$6,$7);")
-	_, err := s.db.Exec(query, empl.Id, empl.Name, empl.Last_name, empl.Patronymic, empl.Phone, empl.Position, empl.Good_job_count)
+	//wbsql.ExecQuery
+	err := wbsql.ExecQuery(s.db, query, empl.Id, empl.Name, empl.Last_name, empl.Patronymic, empl.Phone, empl.Position, empl.Good_job_count)
 	if err != nil {
 		return "", err
 	}
@@ -27,10 +29,29 @@ func (s *EmplWorkPostgres) CreateEmpl(empl restful.Employee, ctx context.Context
 
 func (s *EmplWorkPostgres) GetAllEmpl(ctx context.Context) ([]restful.Employee, error) {
 	var lists []restful.Employee
+
 	query := fmt.Sprintf("SELECT * FROM employees.get_all();")
-	err := s.db.Select(&lists, query)
+	rows, err := wbsql.GetRows(s.db, query)
 	if err != nil {
-		return nil, err
+		//error
+	}
+	scanner := wbsql.InitScanner()
+	for rows.Next() {
+		var value1 restful.Employee
+
+		scanner.ScanRows(rows).
+			ScanSqlNullString("_id", &value1.Id).
+			ScanSqlNullString("_name", &value1.Name).
+			ScanSqlNullString("_last_name", &value1.Last_name).
+			ScanSqlNullString("_patronymic", &value1.Patronymic).
+			ScanSqlNullString("_phone", &value1.Phone).
+			ScanSqlNullString("_position", &value1.Position).
+			ScanSqlNullInt64("_good_job_count", &value1.Good_job_count)
+
+		if scanner.Error() != nil {
+			//error
+		}
+		lists = append(lists, value1)
 	}
 
 	return lists, nil
