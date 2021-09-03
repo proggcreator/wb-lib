@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	restful "github.com/proggcreator/wb-Restful"
+	restful "github.com/proggcreator/wb-lib"
 	repository "github.com/proggcreator/wb-lib/repository"
 )
 

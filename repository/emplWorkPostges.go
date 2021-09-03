@@ -64,8 +64,9 @@ func (s *EmplWorkPostgres) GetByIdEmpl(userId string, ctx context.Context) (rest
 	err := s.db.Get(&empl, query, userId)
 	if err != nil {
 		return restful.Employee{}, err
-	}
+	
 	return empl, nil
+	//}
 }
 
 func (s *EmplWorkPostgres) DeleteEmpl(userId string, ctx context.Context) error {
