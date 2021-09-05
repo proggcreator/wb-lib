@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"strconv"
 	"time"
 
 	wbsql "git.wildberries.ru/finance/go-infrastructure/database/v2"
@@ -13,25 +14,32 @@ const (
 )
 
 type Config struct {
-	Host     string
-	Port     int
-	Username string
-	Password string
-	DBName   string
-	SSLMode  string
+	Host              string
+	Port              string
+	Username          string
+	Password          string
+	DBName            string
+	SSLMode           string
+	ElacticHost       string
+	ElacticAppName    string
+	ElacticAppVersion string
 }
 
 func NewPostgresDB(cfg Config) (wbsql.DbConnecter, error) {
 	MaxOpen := MaxOpen
 	MaxIdle := MaxIdle
 	MaxLifetime := MaxLifetime
+	port, err := strconv.Atoi(cfg.Port)
+	if err != nil {
+		//err
+	}
 
 	db, err := wbsql.NewPgsqlSingleConnecter(wbsql.SqlConnectionConfig{
 		Host:                  cfg.Host,
 		Name:                  cfg.Username,
 		User:                  cfg.Username,
 		Password:              cfg.Password,
-		Port:                  &cfg.Port,
+		Port:                  &port,
 		MaxOpenConnections:    &MaxOpen,
 		MaxIdleConnections:    &MaxIdle,
 		MaxConnectionLifetime: &MaxLifetime,

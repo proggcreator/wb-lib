@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"git.wildberries.ru/finance/go-infrastructure/tech"
 	"github.com/gin-gonic/gin"
 	service "github.com/proggcreator/wb-lib/service"
 )
@@ -26,7 +25,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			mylists.PUT("/employee_upd", h.checkJsonType, h.employee_upd)
 			mylists.GET("/get_all", h.acceptJsonOrXml, h.get_all)
 			mylists.GET("/employee_get/:id", h.employee_get)
-			tech.New().SetAppInfo("employees", "1.0.0").Run()
+			//tech.New().SetAppInfo("employees", "1.0.0").Run()
 
 		}
 	}

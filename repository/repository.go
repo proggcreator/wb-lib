@@ -3,6 +3,7 @@ package repository
 import (
 	wbsql "git.wildberries.ru/finance/go-infrastructure/database/v2"
 
+	logs "git.wildberries.ru/finance/go-infrastructure/elasticlog"
 	restful "github.com/proggcreator/wb-lib"
 )
 
@@ -18,8 +19,8 @@ type Repository struct {
 	EmplWork
 }
 
-func NewRepository(db wbsql.DbConnecter) *Repository {
+func NewRepository(db wbsql.DbConnecter, wblogger *logs.Logger) *Repository {
 	return &Repository{
-		EmplWork: NewEmplWorkPostgres(db),
+		EmplWork: NewEmplWorkPostgres(db, wblogger),
 	}
 }

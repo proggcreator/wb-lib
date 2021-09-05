@@ -1,0 +1,14 @@
+Username = "postgresadmin"
+Host = "postgres.finance.svc.k8s.dldevel"
+Port = "5432"
+DBName = "postgresdb"
+SSLMode = "disable"
+Password = "admin123"
+
+ElacticHost =     "fin-dev-logs.dev.wb.ru:9200"
+ElacticAppName =    "employees"
+ElacticAppVersion = "1.0.0"
+
+
+
+    

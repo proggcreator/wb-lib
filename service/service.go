@@ -1,7 +1,7 @@
 package service
 
 import (
-	restful "github.com/proggcreator/wb-lib/"
+	restful "github.com/proggcreator/wb-lib"
 	repository "github.com/proggcreator/wb-lib/repository"
 )
 

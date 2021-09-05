@@ -7,26 +7,31 @@ import (
 	"time"
 
 	wbsql "git.wildberries.ru/finance/go-infrastructure/database/v2"
+	logs "git.wildberries.ru/finance/go-infrastructure/elasticlog"
 	wbsqlreq "git.wildberries.ru/finance/go-infrastructure/sql-requests/v2"
 	restful "github.com/proggcreator/wb-lib"
 )
 
 type EmplWorkPostgres struct {
-	db wbsql.DbConnecter
+	db       wbsql.DbConnecter
+	wblogger *logs.Logger
 }
 
-func NewEmplWorkPostgres(db wbsql.DbConnecter) *EmplWorkPostgres {
-	return &EmplWorkPostgres{db: db}
+func NewEmplWorkPostgres(db wbsql.DbConnecter, wblogger *logs.Logger) *EmplWorkPostgres {
+	return &EmplWorkPostgres{db: db,
+		wblogger: wblogger}
 }
 
 //transformation of interface
 func retPgDb(s *EmplWorkPostgres) (*sql.DB, error) {
 	pgdb, err := s.db.Connection()
 	if err != nil {
+
 		return nil, err
 	}
 	sqlDb, ok := pgdb.(*sql.DB)
 	if !ok {
+
 		return nil, err
 	}
 	return sqlDb, nil
