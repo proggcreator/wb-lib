@@ -1,7 +1,7 @@
 package handler
 
 import (
-	tech "git.wildberries.ru/finance/go-infrastructure/tech/v2"
+	"git.wildberries.ru/finance/go-infrastructure/tech"
 	"github.com/gin-gonic/gin"
 	service "github.com/proggcreator/wb-lib/service"
 )
@@ -17,8 +17,6 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
-	tech.New().SetAppInfo("stuff-shk", "1.0.0")
-
 	api := router.Group("/")
 	{
 		mylists := api.Group("/api/v1", h.checkClaim)
@@ -28,7 +26,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			mylists.PUT("/employee_upd", h.checkJsonType, h.employee_upd)
 			mylists.GET("/get_all", h.acceptJsonOrXml, h.get_all)
 			mylists.GET("/employee_get/:id", h.employee_get)
-			mylists.GET("/tech/info", h.employee_tech)
+			tech.New().SetAppInfo("employees", "1.0.0").Run()
+
 		}
 	}
 

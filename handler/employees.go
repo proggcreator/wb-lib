@@ -1,92 +1,84 @@
 package handler
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 
+	"git.wildberries.ru/finance/go-infrastructure/rfc7807"
 	"github.com/gin-gonic/gin"
 	restful "github.com/proggcreator/wb-lib"
 )
 
 const (
-	id      = "5"
-	timeout = 100 * time.Millisecond
+	id = "5"
 )
 
 func (h *Handler) employee_add(c *gin.Context) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
+
 	//create new employee
-	exampleEmp := restful.RetEmployee()
+	exampl := restful.RetEmployee()
 	//
-	id, err := h.services.EmplWork.CreateEmpl(exampleEmp, ctx)
+	id, err := h.services.EmplWork.CreateEmpl(exampl)
 	if err != nil {
-		NewJsonError(c, JsonError{
-			Status: http.StatusBadRequest,
-			Title:  "BadRequest",
-			Detail: "error create employee"})
+		rfc7807.NewProblem().SetTitle("BadRequest").
+			SetDetail("error create employee").SetStatusCode(http.StatusBadRequest).
+			Write(c.Writer)
 		return
 	}
 	fmt.Fprintf(c.Writer, "%s Created", id)
 }
 
 func (h *Handler) employee_remove(c *gin.Context) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
+
 	//remove employee
-	err := h.services.EmplWork.DeleteEmpl(id, ctx)
+	err := h.services.EmplWork.DeleteEmpl(id)
 	if err != nil {
-		NewJsonError(c, JsonError{
-			Status: http.StatusBadRequest,
-			Title:  "BadRequest",
-			Detail: "error delete employee"})
+		rfc7807.NewProblem().SetTitle("BadRequest").
+			SetDetail("error delete employee").SetStatusCode(http.StatusBadRequest).
+			Write(c.Writer)
+
 		return
 	}
 
 }
 func (h *Handler) employee_upd(c *gin.Context) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
+
 	//update employee
 	newEmp := restful.RetEmployee()
 	//
-	err := h.services.EmplWork.UpdateEmpl(newEmp, ctx)
+	err := h.services.EmplWork.UpdateEmpl(newEmp)
 	if err != nil {
-		NewJsonError(c, JsonError{
-			Status: http.StatusBadRequest,
-			Title:  "BadRequest",
-			Detail: "error update employee"})
+		rfc7807.NewProblem().SetTitle("BadRequest").
+			SetDetail("error update employee").SetStatusCode(http.StatusBadRequest).
+			Write(c.Writer)
 		return
 	}
 }
 func (h *Handler) get_all(c *gin.Context) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-	list, err := h.services.EmplWork.GetAllEmpl(ctx)
+
+	list, err := h.services.EmplWork.GetAllEmpl()
 	if err != nil {
-		NewJsonError(c, JsonError{
-			Status: http.StatusBadRequest,
-			Title:  "BadRequest",
-			Detail: "error create employee"})
+
+		rfc7807.NewProblem().SetTitle("BadRequest").
+			SetDetail("error create employee").SetStatusCode(http.StatusBadRequest).
+			Write(c.Writer)
 		return
 	}
 	fmt.Fprint(c.Writer, "Все пользователи:  ")
 	fmt.Fprint(c.Writer, list)
 }
 func (h *Handler) employee_get(c *gin.Context) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
+
 	//parse id param
 	id := c.Param("id")
-	list, err := h.services.EmplWork.GetByIdEmpl(id, ctx)
+	list, err := h.services.EmplWork.GetByIdEmpl(id)
 	if err != nil {
-		NewJsonError(c, JsonError{
-			Status: http.StatusBadRequest,
-			Title:  "BadRequest",
-			Detail: "error get by id"})
+
+		rfc7807.NewProblem().SetTitle("BadRequest").
+			SetDetail("error get by id").SetStatusCode(http.StatusBadRequest).
+			Write(c.Writer)
+
 		return
 	}
 	fmt.Fprint(c.Writer, list)

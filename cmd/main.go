@@ -1,6 +1,7 @@
 package main
 
 import (
+	configreader "git.wildberries.ru/finance/go-infrastructure/config-reader/v2"
 	_ "github.com/lib/pq"
 	restful "github.com/proggcreator/wb-lib"
 	"github.com/proggcreator/wb-lib/handler"
@@ -12,20 +13,16 @@ import (
 
 func main() {
 	//set loger format
-	logrus.SetFormatter(new(logrus.JSONFormatter))
 
-	if err := initConfig(); err != nil {
-		logrus.Fatalf("error initializing configs: %s", err.Error())
+	//get config param
+	config := repository.Config{}
+	err := configreader.Read(&config, "../configs/config.toml")
+	if err != nil {
+		logrus.Fatalf("error get configs: %s", err.Error())
+		return
 	}
-
-	db, err := repository.NewPostgresDB(repository.Config{
-		Host:     viper.GetString("db.host"),
-		Port:     viper.GetString("db.port"),
-		Username: viper.GetString("db.username"),
-		DBName:   viper.GetString("db.dbname"),
-		SSLMode:  viper.GetString("db.sslmode"),
-		Password: viper.GetString("db.password"),
-	})
+	//create db connection
+	db, err := repository.NewPostgresDB(config)
 	if err != nil {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
@@ -36,15 +33,8 @@ func main() {
 
 	srv := new(restful.Server)
 
-	logrus.Print("Restful runing..")
 	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 		logrus.Fatalf("error occured while running http server: %s", err.Error())
 	}
 
-}
-
-func initConfig() error {
-	viper.AddConfigPath("configs")
-	viper.SetConfigName("config")
-	return viper.ReadInConfig()
 }

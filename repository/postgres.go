@@ -1,22 +1,41 @@
 package repository
 
 import (
-	"database/sql"
-	"fmt"
+	"time"
+
+	wbsql "git.wildberries.ru/finance/go-infrastructure/database/v2"
+)
+
+const (
+	MaxOpen     int           = 10
+	MaxIdle     int           = 5
+	MaxLifetime time.Duration = time.Second * 10
 )
 
 type Config struct {
 	Host     string
-	Port     string
+	Port     int
 	Username string
 	Password string
 	DBName   string
 	SSLMode  string
 }
 
-func NewPostgresDB(cfg Config) (*sql.DB, error) {
-	db, err := sql.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
-		cfg.Host, cfg.Port, cfg.Username, cfg.DBName, cfg.Password, cfg.SSLMode))
+func NewPostgresDB(cfg Config) (wbsql.DbConnecter, error) {
+	MaxOpen := MaxOpen
+	MaxIdle := MaxIdle
+	MaxLifetime := MaxLifetime
+
+	db, err := wbsql.NewPgsqlSingleConnecter(wbsql.SqlConnectionConfig{
+		Host:                  cfg.Host,
+		Name:                  cfg.Username,
+		User:                  cfg.Username,
+		Password:              cfg.Password,
+		Port:                  &cfg.Port,
+		MaxOpenConnections:    &MaxOpen,
+		MaxIdleConnections:    &MaxIdle,
+		MaxConnectionLifetime: &MaxLifetime,
+	})
 	if err != nil {
 		return nil, err
 	}

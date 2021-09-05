@@ -1,24 +1,24 @@
 package repository
 
 import (
-	"context"
-	"database/sql"
+	wbsql "git.wildberries.ru/finance/go-infrastructure/database/v2"
 
 	restful "github.com/proggcreator/wb-lib"
 )
 
 type EmplWork interface {
-	CreateEmpl(empl restful.Employee, ctx context.Context) (string, error)
-	GetAllEmpl(ctx context.Context) ([]restful.Employee, error)
-	GetByIdEmpl(userId string, ctx context.Context) (restful.Employee, error)
-	DeleteEmpl(userId string, ctx context.Context) error
-	UpdateEmpl(newemployee restful.Employee, ctx context.Context) error
+	CreateEmpl(employee restful.Employee) (string, error)
+	GetAllEmpl() ([]restful.Employee, error)
+	GetByIdEmpl(userId string) (restful.Employee, error)
+	DeleteEmpl(userId string) error
+	UpdateEmpl(newemployee restful.Employee) error
 }
+
 type Repository struct {
 	EmplWork
 }
 
-func NewRepository(db *sql.DB) *Repository {
+func NewRepository(db wbsql.DbConnecter) *Repository {
 	return &Repository{
 		EmplWork: NewEmplWorkPostgres(db),
 	}
